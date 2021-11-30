@@ -36,6 +36,15 @@
 
 #include "api.h"
 
+#include "EZ-Template/setup.hpp"
+#include "EZ-Template/util.hpp"
+#include "EZ-Template/joystick_control.hpp"
+#include "EZ-Template/auton_drive_functions.hpp"
+// More includes here...
+#include "conveyor.hpp"
+#include "tilter.hpp"
+#include "mogo.hpp"
+#include "autons.hpp"
 /**
  * You should add more #includes here
  */
