@@ -15,7 +15,7 @@ class Record {
         FILE* writeFile;
 
     void init() {
-
+        std::cout << "Initializing record..." << std::endl;
     }
 
     void record(pros::Controller master) {
@@ -29,6 +29,7 @@ class Record {
 
         //Combine
         std::string lineOut = al + " " + ar + " " + dr1 + " " + dl1 + " " + dl2 + " ";
+        std::cout << "Recorded: " << lineOut << std::endl;
         const char* pchar = lineOut.c_str();
 
         fputs(pchar, writeFile);

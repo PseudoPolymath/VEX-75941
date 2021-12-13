@@ -163,9 +163,23 @@ autonomous() {
 	tare_gyro();
 	reset_drive_sensor();
 	set_drive_brake(MOTOR_BRAKE_HOLD);
-	drive_pid.resume();
+	
+	//Drive forward and set lifter down
+	set_tank(127, 127);
+	pros::delay(1500);
 
-	auto_select(true);
+	//Stop and pickup
+	set_tank(0, 0);
+	tilter_in();
+	pros::delay(500);
+
+	//Drive back and set lifter up
+	set_tank(127, 127);
+	pros::delay(1600);
+
+	//Stop and drop
+	set_tank(0, 0);
+	
 }
 
 
@@ -184,9 +198,11 @@ autonomous() {
  * task, not resume it from where it left off.
  */
 void
-opcontrol() { 
+opcontrol() {
+	//Recording object 
 	//Record rc; 
 	//rc.init();
+
 	drive_pid.suspend();
 	reset_drive_sensor();
 	set_drive_brake(MOTOR_BRAKE_COAST); // This is preference to what you like to drive on
