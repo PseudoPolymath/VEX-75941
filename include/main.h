@@ -45,6 +45,7 @@
 #include "tilter.hpp"
 #include "mogo.hpp"
 #include "autons.hpp"
+#include "dual_lift_control.hpp"
 /**
  * You should add more #includes here
  */
