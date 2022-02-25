@@ -103,7 +103,7 @@ imu_calibrate() {
   while (gyro.get_status() & pros::c::E_IMU_STATUS_CALIBRATING) {
     iter += delay;
 
-		if (iter > 2990) {
+		if (iter > 290) {
 			printf("No IMU plugged in, (took %d ms to realize that)\n", iter);
 			return false;
 		}

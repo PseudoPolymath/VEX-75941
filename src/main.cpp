@@ -1,7 +1,7 @@
 #include "main.h"
 #include "replay.hpp"
 
-
+#define DELAY_ACCURACY 20
 /**
  * Disables all tasks.
  *
@@ -94,7 +94,7 @@ page_down() {
  */
 void
 initialize() {
-	std::cout << "Start!" << std::endl;
+	std::cout << "terminal works" << std::endl;
 	print_ez_template();
 	pros::delay(500);
 
@@ -111,10 +111,6 @@ initialize() {
 
 	tare_sensors();
 	chassis_motor_init();
-
-	std::cout << "Auton" << std::endl;
-	Replay replay;
-	replay.start();
 }
 
 
@@ -160,26 +156,21 @@ competition_initialize() {
  */
 void
 autonomous() {
-	tare_gyro();
+	std::cout << "Pre sys started" << std::endl;
+	drive_pid.suspend();
 	reset_drive_sensor();
-	set_drive_brake(MOTOR_BRAKE_HOLD);
-	
-	//Drive forward and set lifter down
-	set_tank(127, 127);
-	pros::delay(1500);
+	set_drive_brake(MOTOR_BRAKE_HOLD); // This is preference to what you like to drive on
 
-	//Stop and pickup
-	set_tank(0, 0);
-	tilter_in();
-	pros::delay(500);
-
-	//Drive back and set lifter up
-	set_tank(127, 127);
-	pros::delay(1600);
-
-	//Stop and drop
-	set_tank(0, 0);
-	
+	//Replay System
+	std::cout << "Pre sys initialized" << std::endl;
+	Replay rp;
+	rp.init();
+	std::cout << "RP initialized" << std::endl;
+	tilter_out();
+	while(true) {
+		rp.replay();
+		pros::delay(23);
+	}
 }
 
 
@@ -198,17 +189,16 @@ autonomous() {
  * task, not resume it from where it left off.
  */
 void
-opcontrol() {
-	//Recording object 
-	//Record rc; 
-	//rc.init();
+opcontrol() { 
+	Record rc; 
+	rc.init();
 
 	drive_pid.suspend();
 	reset_drive_sensor();
-	set_drive_brake(MOTOR_BRAKE_COAST); // This is preference to what you like to drive on
+	set_drive_brake(MOTOR_BRAKE_HOLD); // This is preference to what you like to drive on
 
 	while (true) {
-		//rc.record(master);
+		rc.record(master);
 		chassis_joystick_control();
 
 		conveyor_control();
@@ -216,7 +206,8 @@ opcontrol() {
 		mogo_control();
 		tilter_control();
 
-		pros::delay(DELAY_TIME);
+		//rp.replay();
+		pros::delay(20);
 	}
 
 	//rc.stopRecord();
