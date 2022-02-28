@@ -1,0 +1,11 @@
+Unweighted lifting
+
+Current:        871 Effiency:   65 Voltage:     11858 Torque:   0
+Current:        818 Effiency:   65 Voltage:     11858 Torque:   0
+Current:        398 Effiency:   55 Voltage:     10786 Torque:   0
+Current:        951 Effiency:   64 Voltage:     11932 Torque:   0
+Current:        788 Effiency:   66 Voltage:     11722 Torque:   0
+Current:        717 Effiency:   64 Voltage:     11433 Torque:   0
+Current:        816 Effiency:   63 Voltage:     11655 Torque:   0
+Current:        918 Effiency:   65 Voltage:     11870 Torque:   0
+Current:        733 Effiency:   63 Voltage:     11519 Torque:   0
