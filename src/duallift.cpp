@@ -2,7 +2,7 @@
 
 bool clampState = true; // Clamp starts up
 pros::Motor m_lift (20, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
-pros::Motor m_clamp (19, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
+pros::Motor m_clamp (19, MOTOR_GEARSET_36, true, MOTOR_ENCODER_DEGREES);
 
 int i = 0;
 bool HT = false;
@@ -18,7 +18,7 @@ void dual_lift_control() {
     if(clampState) {
         m_clamp.move_absolute(0, 127);
     } else {
-        m_clamp.move_absolute(-130, 127);
+        m_clamp.move_absolute(-140, 127);
     }
 
 
