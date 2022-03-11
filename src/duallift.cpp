@@ -29,18 +29,6 @@ void dual_lift_control() {
     float torq = m_lift.get_torque();
     int temp = m_lift.get_temperature();
 
-    
-    
-    i++;
-    if(i > 3) {
-        //std::cout << "Curr: \t" << current << " Eff: \t" << eff << " Volt: \t" << volt << " Torque: \t" << torq << " Temp: \t" << temp << std::endl;
-        if(current > 2000) {
-            //std::cout << "HIGH TORQUE MODE" << std::endl;
-            HT = true;
-        }
-        i = 0;
-    }
-
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
         m_lift.move_velocity(255);
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
@@ -48,9 +36,5 @@ void dual_lift_control() {
         HT = false;
      } else { m_lift.move_velocity(0); }
 
-    if(HT) {
-        m_lift.move_velocity(255);
-    }
-
-    std::cout << "HT: " << HT << " \tCurrent: " << current << std::endl;
+    std::cout << " \tCurrent: " << current << std::endl;
 }
