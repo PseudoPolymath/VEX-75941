@@ -22,7 +22,7 @@ public:
 
     void record(pros::Controller master)
     {
-        writeFile = fopen("/usd/fancy27.txt", "a");
+        writeFile = fopen("/usd/fancy34.txt", "a");
         std::string al = std::to_string(master.get_analog(ANALOG_LEFT_Y));
         std::string ar = std::to_string(master.get_analog(ANALOG_RIGHT_Y));
 
@@ -102,7 +102,7 @@ public:
     {
         std::cout << "Initializing replay..." << std::endl;
 
-        readFile = fopen("/usd/fancy27.txt", "r");
+        readFile = fopen("/usd/fancy34.txt", "r");
         fread(buf, sizeof(char), 100000, readFile);
 
         bufStr = std::string(buf);

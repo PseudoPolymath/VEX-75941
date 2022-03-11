@@ -137,7 +137,7 @@ mogo_out(bool hold) {
 void
 mogo_control() {
   // Toggle for mogo
-  if (master.get_digital(DIGITAL_L1) && mogo_lock==0) {
+  if (master.get_digital(DIGITAL_R1) && mogo_lock==0) {
     if (is_at_neut)
       mogo_up = false;
     else
@@ -147,7 +147,7 @@ mogo_control() {
     mogo_lock = 1;
   }
   // If mogo is held while the mogo lift is out, bring the mogo lift to neut position
-  else if (master.get_digital(DIGITAL_L1)) {
+  else if (master.get_digital(DIGITAL_R1)) {
     if (mogo_up) {
       controller_mogo_timer+=DELAY_TIME;
       if (controller_mogo_timer>=300)
@@ -155,7 +155,7 @@ mogo_control() {
     }
   }
   // Reset when button is let go
-  else if (!master.get_digital(DIGITAL_L1)) {
+  else if (!master.get_digital(DIGITAL_R1)) {
     mogo_lock  = 0;
     controller_mogo_timer = 0;
   }

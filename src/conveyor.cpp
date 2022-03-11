@@ -69,9 +69,9 @@ set_conveyor(int input)  {
 ///
 void
 conveyor_control() {
-  if (master.get_digital(DIGITAL_R1))
+  if (master.get_digital(DIGITAL_L1))
     set_conveyor(127);
-  else if (master.get_digital(DIGITAL_R2))
+  else if (master.get_digital(DIGITAL_L2))
     set_conveyor(-127);
   else
     set_conveyor(0);

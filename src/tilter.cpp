@@ -126,9 +126,9 @@ tilter_out(bool hold) {
 void
 tilter_control() {
   // Toggle for tilter
-  if (master.get_digital(DIGITAL_L2)) {
+  if (master.get_digital(DIGITAL_R2)) {
     tilter_up = false;
-  } else if(master.get_digital(DIGITAL_L1)) {
+  } else if(master.get_digital(DIGITAL_R1)) {
     tilter_up = true;
   }
 

@@ -190,15 +190,15 @@ autonomous() {
  */
 void
 opcontrol() { 
-	//Record rc; 
-	//rc.init();
+	Record rc; 
+	rc.init();
 
 	drive_pid.suspend();
 	reset_drive_sensor();
 	set_drive_brake(MOTOR_BRAKE_HOLD); // This is preference to what you like to drive on
 
 	while (true) {
-		//rc.record(master);
+		rc.record(master);
 		chassis_joystick_control();
 
 		conveyor_control();
@@ -212,5 +212,5 @@ opcontrol() {
 		pros::delay(20);
 	}
 
-	//rc.stopRecord();
+	rc.stopRecord();
 }
