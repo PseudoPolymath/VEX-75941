@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -31,19 +31,24 @@ class Imu {
 	/**
 	 * Calibrate IMU
 	 *
-	 * Calibration takes approximately 2 seconds, but this function only blocks
- 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING.
-	 *
+	 * Calibration takes approximately 2 seconds and blocks during this period if 
+	 * the blocking param is true, with a timeout for this operation being set a 3 
+	 * seconds as a safety margin. This function also blocks until the IMU 
+	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
+	 * blocking time of 5ms and a timeout of 1 second if it's never set.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is already calibrating
+	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
+	 * \param blocking 
+	 *			Whether this function blocks during calibration.
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset() const;
+	virtual std::int32_t reset(bool blocking = false) const;
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
@@ -62,7 +67,8 @@ class Imu {
 	* ENODEV - The port cannot be configured as an Inertial Sensor
 	* EAGAIN - The sensor is still calibrating
 	*
-	* \param rate The data refresh interval in milliseconds
+	* \param rate 
+	*			The data refresh interval in milliseconds
 	* \return 1 if the operation was successful or PROS_ERR if the operation
 	* failed, setting errno.
 	*/

@@ -4,7 +4,7 @@
  * Contains common definitions and header files used throughout your PROS
  * project.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -36,16 +36,6 @@
 
 #include "api.h"
 
-#include "EZ-Template/setup.hpp"
-#include "EZ-Template/util.hpp"
-#include "EZ-Template/joystick_control.hpp"
-#include "EZ-Template/auton_drive_functions.hpp"
-// More includes here...
-#include "conveyor.hpp"
-#include "tilter.hpp"
-#include "mogo.hpp"
-#include "autons.hpp"
-#include "dual_lift_control.hpp"
 /**
  * You should add more #includes here
  */
