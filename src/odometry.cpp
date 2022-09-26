@@ -1,34 +1,36 @@
 #include "main.h"
 
-void tracking () {
-    double sL = 7; //horizontal distance from the traking center to left encoder
-    double sR = 7; //horizontal distance from the traking center to right encoder
-    double sS = 7; //vertical distance from the traking center to horizontal encoder
-    double x = 10; //initial/current global x position
-    double y = 10; //initial/current global y position
-    double rd; //polar radius of position vector
-    double thetad; //polar theta of position vector
-    double rL = 7; //radius of left encoder
-    double rR = 7; //radius of right encoder
-    double rS = 7; //radius of horizontal encoder
-    double theta1 = 0; //previous global orientation
-    double theta2; //current global orientation
-    double thetaR = 0; //global position at last reset
-    double LR = 0; //initial left encoder value
-    double L1 = 0; //previous left encoder value
-    double R1 = 0; //previous right encoder value
-    double S1 = 0; //previous horizontal encoder value
-    double L2; //current left encoder value
-    double R2; //current right encoder value
-    double S2; //current horizonal encoder value
-    double dTheta; //change in orientation
-    double thetaM; //average orientation
-    double dx; //change in x position
-    double dy; //change in y position
-    double dR; //change in right encoder distance
-    double dS; //change in horizontal encoder distance
-    double dLR; //change in left encoder distance since last reset
-    double dRR; //change in right encoder distance since last reset
+void tracking() {
+    double distanceLeftEncoder = 7; //horizontal distance from the traking center to left encoder
+    double distanceRightEncoder = 7; //horizontal distance from the traking center to right encoder
+    double distanceBackEncoder = 7; //vertical distance from the traking center to horizontal encoder
+    double xPos = 10; //initial/current global x position
+    double yPos = 10; //initial/current global y position
+    double radiusPos; //polar radius of position vector
+    double thetaPos; //polar theta of position vector
+    double radiusLeft = 7; //radius of left encoder
+    double radiusRight = 7; //radius of right encoder
+    double radiusBack = 7; //radius of horizontal encoder
+    double orientation; //global orientation
+    double orientationInitial = 0; //previous global orientation
+    double orientationFinal; //current global orientation
+    double orientationReset = 0; //global position at last reset
+    double leftValueReset = 0; //initial left encoder value
+    double rightValueReset = 0; //initial left encoder value
+    double leftValueInitial = 0; //previous left encoder value
+    double rightValueInitial = 0; //previous right encoder value
+    double backValueInitial = 0; //previous horizontal encoder value
+    double leftValueFinal; //current left encoder value
+    double rightValueFinal; //current right encoder value
+    double backValueFinal; //current horizonal encoder value
+    double deltaOrientation; //change in orientation
+    double averageOrientation; //average orientation
+    double deltaXPos; //change in x position
+    double deltaYPos; //change in y position
+    double deltaRightValue; //change in right encoder distance
+    double deltaBackValue; //change in horizontal encoder distance
+    double deltaLeftValueReset; //change in left encoder distance since last reset
+    double deltaRightValueReset; //change in right encoder distance since last reset
     
 
     pros::ADIEncoder encoderL (1, 2, false);
@@ -37,62 +39,77 @@ void tracking () {
 
     while (true) {
         //get values
-        L2 = encoderL.get_value();
-        R2 = encoderR.get_value();
-        S2 = encoderS.get_value();
+        leftValueFinal = encoderL.get_value();
+        rightValueFinal = encoderR.get_value();
+        backValueFinal = encoderS.get_value();
         //convert to radians and calculate arc length
-        L2 = (L2/180) * M_PI * rL;
-        R2 = (R2/180) * M_PI * rR;
-        S2 = (S2/180) * M_PI * rS;
+        leftValueFinal = (leftValueFinal/180) * M_PI * radiusLeft;
+        rightValueFinal = (rightValueFinal/180) * M_PI * radiusRight;
+        backValueFinal = (backValueFinal/180) * M_PI * radiusBack;
         //calculate deltas
-        dR = R2 - R1;
-        dS = S2 - S1;
+        deltaRightValue = rightValueFinal - rightValueInitial;
+        deltaBackValue = backValueFinal - backValueInitial;
         //calculate deltas since last reset
-        dLR = L2 - LR;
-        dRR = R2 - RR;
+        deltaLeftValueReset = leftValueFinal - leftValueReset;
+        deltaRightValueReset = rightValueFinal - rightValueReset;
         //set final to initial
-        L1 = L2;
-        R1 = R2;
-        S1 = S2;
+        leftValueInitial = leftValueFinal;
+        rightValueInitial = rightValueFinal;
+        backValueInitial = backValueFinal;
         //calculate current orientation
-        theta2 = thetaR - ((dLR - dRR) / (sL + sR));
+        orientationFinal = orientationReset - ((deltaLeftValueReset - deltaRightValueReset) / (distanceLeftEncoder + distanceRightEncoder));
         //calculate delta theta
-        dTheta = theta2 - theta1;
+        deltaOrientation = orientationFinal - orientationInitial;
         //calculate average orientation
-        thetaM = theta1 - (dtheta/2);
+        averageOrientation = orientationInitial - (deltaOrientation/2);
+        //set orienationFinal to output
+        orientation = orientationFinal;
         //set final to initial
-        theta1 = theta2;
-        if (dTheta = 0) {
+        orientationInitial = orientationFinal;
+        if (deltaOrientation = 0) {
             //no change in orientation
-            dx = dS;
-            dy = dR;
+            deltaXPos = deltaBackValue;
+            deltaYPos = deltaRightValue;
             //convert to polar coordinates
-            thetad = atan2(dy, dx);
-            rd = sqrt(pow(dy, 2) + pow(dx, 2);
+            thetaPos = atan2(deltaYPos, deltaXPos);
+            radiusPos = sqrt(pow(deltaYPos, 2) + pow(deltaXPos, 2);
             //rotate local coordinates to global coordinates
-            thetad = thetad - thetaM;
+            thetaPos = thetaPos - averageOrientation;
             //convert to cartestian coordinates
-            dx = cos(thetad) * rd;
-            dy = sin(thetad) * rd;
+            deltaXPos = cos(thetad) * radiusPos;
+            deltaYPos = sin(thetad) * radiusPos;
         } else {
             //change in orientation
-            dx = 2 * sin(dTheta / 2) * ((dS / dTheta) + sS);
-            dy = 2 * sin(dTheta / 2) * ((dR / dTheta) + rS);
+            deltaXPos = 2 * sin(deltaOrientation / 2) * ((deltaBackValue / deltaOrientation) + distanceBackEncoder);
+            deltaYPos = 2 * sin(deltaOrientation / 2) * ((deltaRightValue / deltaOrientation) + distanceRightEncoder);
             //convert to polar coordinates
-            thetad = atan2(dy, dx);
-            rd = sqrt(pow(dy, 2) + pow(dx, 2);
+            thetaPos = atan2(deltaYPos, deltaXPos);
+            radiusPos = sqrt(pow(deltaYPos, 2) + pow(deltaXPos, 2);
             //rotate local coordinates to global coordinates
-            thetad = thetad - thetaM;
+            thetaPos = thetaPos - averageOrientation;
             //convert to cartestian coordinates
-            dx = cos(thetad) * rd;
-            dy = sin(thetad) * rd;
+            deltaXPos = cos(thetad) * radiusPos;
+            deltaYPos = sin(thetad) * radiusPos;
         }
-        x = x + dx;
-        y = y + dy;
+        xPos = xPos + deltaXPos;
+        yPos = yPos + deltaYPos;
+        
         /*Outputs:
-        x = global x position
-        y = global y position
-        theta1 = global orientation
+        xPos = global x position
+        yPos = global y position
+        orientation = global orientation
         */
     }
+}
+
+void turn(double degrees) {
+
+}
+
+void turnToPoint() {
+
+}
+
+void moveToPoint() {
+    //haha...no
 }
