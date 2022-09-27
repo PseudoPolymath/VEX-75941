@@ -1,25 +1,29 @@
 #include "main.h"
 
 void tracking() {
+    pros::ADIEncoder encoderLeft (1, 2, false);
+    pros::ADIEncoder encoderRight (3, 4, false);
+    pros::ADIEncoder encoderBack (5, 6, false);
+    
     double distanceLeftEncoder = 7; //horizontal distance from the traking center to left encoder
     double distanceRightEncoder = 7; //horizontal distance from the traking center to right encoder
     double distanceBackEncoder = 7; //vertical distance from the traking center to horizontal encoder
     double xPos = 10; //initial/current global x position
     double yPos = 10; //initial/current global y position
+    double orientation = 0; //global orientation
     double radiusPos; //polar radius of position vector
     double thetaPos; //polar theta of position vector
     double radiusLeft = 7; //radius of left encoder
     double radiusRight = 7; //radius of right encoder
     double radiusBack = 7; //radius of horizontal encoder
-    double orientation; //global orientation
-    double orientationInitial = 0; //previous global orientation
+    double orientationInitial = orientation; //previous global orientation
     double orientationFinal; //current global orientation
-    double orientationReset = 0; //global position at last reset
-    double leftValueReset = 0; //initial left encoder value
-    double rightValueReset = 0; //initial left encoder value
-    double leftValueInitial = 0; //previous left encoder value
-    double rightValueInitial = 0; //previous right encoder value
-    double backValueInitial = 0; //previous horizontal encoder value
+    double orientationReset = orientation; //global position at last reset
+    double leftValueReset = encoderLeft.get_value(); //initial left encoder value
+    double rightValueReset = encoderRight.get_value(); //initial left encoder value
+    double leftValueInitial = encoderLeft.get_value(); //previous left encoder value
+    double rightValueInitial = encoderRight.get_value(); //previous right encoder value
+    double backValueInitial = encoderBack.get_value(); //previous horizontal encoder value
     double leftValueFinal; //current left encoder value
     double rightValueFinal; //current right encoder value
     double backValueFinal; //current horizonal encoder value
@@ -32,16 +36,11 @@ void tracking() {
     double deltaLeftValueReset; //change in left encoder distance since last reset
     double deltaRightValueReset; //change in right encoder distance since last reset
     
-
-    pros::ADIEncoder encoderL (1, 2, false);
-    pros::ADIEncoder encoderR (3, 4, false);
-    pros::ADIEncoder encoderS (5, 6, false);
-
     while (true) {
         //get values
-        leftValueFinal = encoderL.get_value();
-        rightValueFinal = encoderR.get_value();
-        backValueFinal = encoderS.get_value();
+        leftValueFinal = encoderLeft.get_value();
+        rightValueFinal = encoderRight.get_value();
+        backValueFinal = encoderBack.get_value();
         //convert to radians and calculate arc length
         leftValueFinal = (leftValueFinal/180) * M_PI * radiusLeft;
         rightValueFinal = (rightValueFinal/180) * M_PI * radiusRight;
