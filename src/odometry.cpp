@@ -1,5 +1,16 @@
 #include "main.h"
 
+class Odometry {
+    public:
+    double xPos = 10; //global x position
+    double yPos = 10; //global y position
+    double orientation = 0; //global orientation
+    
+    void tracking();
+    void turn(double degrees);
+    void turnToPoint(double targetX, double targetY);
+};
+
 void tracking() {
     pros::ADIEncoder encoderLeft (1, 2, false);
     pros::ADIEncoder encoderRight (3, 4, false);
@@ -8,9 +19,6 @@ void tracking() {
     double distanceLeftEncoder = 7; //horizontal distance from the traking center to left encoder
     double distanceRightEncoder = 7; //horizontal distance from the traking center to right encoder
     double distanceBackEncoder = 7; //vertical distance from the traking center to horizontal encoder
-    double xPos = 10; //initial/current global x position
-    double yPos = 10; //initial/current global y position
-    double orientation = 0; //global orientation
     double radiusPos; //polar radius of position vector
     double thetaPos; //polar theta of position vector
     double radiusLeft = 7; //radius of left encoder
@@ -105,7 +113,7 @@ void turn(double degrees) {
 
 }
 
-void turnToPoint() {
+void turnToPoint(double targetX, double targetY) {
 
 }
 
