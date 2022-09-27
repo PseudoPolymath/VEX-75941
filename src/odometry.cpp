@@ -11,7 +11,7 @@ class Odometry {
     void turnToPoint(double targetX, double targetY);
 };
 
-void tracking() {
+void Odometry::tracking() {
     pros::ADIEncoder encoderLeft (1, 2, false);
     pros::ADIEncoder encoderRight (3, 4, false);
     pros::ADIEncoder encoderBack (5, 6, false);
@@ -109,14 +109,14 @@ void tracking() {
     }
 }
 
-void turn(double degrees) {
+void Odometry::turn(double degrees) {
 
 }
 
-void turnToPoint(double targetX, double targetY) {
+void Odometry::turnToPoint(double targetX, double targetY) {
 
 }
 
-void moveToPoint() {
+void Odometry::moveToPoint() {
     //haha...no
 }
