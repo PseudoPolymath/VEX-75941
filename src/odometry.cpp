@@ -110,7 +110,15 @@ void Odometry::tracking() {
 }
 
 void Odometry::turn(double degrees) {
+    double error = motor_get_position() - motor_get_position();
+    double Kp = 1; //proportional constant
+    double Ki = 1; //integral constant
+    double Kd = 1; //derivative constant
+    bool targetOrientation;
 
+    while (targetOrientation = false) {
+        //PID loop
+    }
 }
 
 void Odometry::turnToPoint(double targetX, double targetY) {
