@@ -106,18 +106,29 @@ void Odometry::tracking() {
         yPos = global y position
         orientation = global orientation
         */
+       pros::delay(20);
     }
 }
 
 void Odometry::turn(double degrees) {
-    double error = motor_get_position() - motor_get_position();
     double Kp = 1; //proportional constant
     double Ki = 1; //integral constant
     double Kd = 1; //derivative constant
     bool targetOrientation;
+    double error1;
+    double error2;
+    double lastError1;
+    double derivative1;
+    double integral1;
+    double derivative2;
+    double integral2;
 
     while (targetOrientation = false) {
-        //PID loop
+        error1 = left_mtr_1.get_position() - right_mtr_1.get_position();
+        error2 = left_mtr_2.get_position() - right_mtr_2.get_position();
+        integral1 = integral1 + error1
+        derivative1 = error - lasterror
+        
     }
 }
 
