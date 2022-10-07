@@ -120,7 +120,6 @@ void Odometry::tracking() {
         yPos = global y position
         orientation = global orientation
         */
-
        pros::delay(20);
     }
 }
