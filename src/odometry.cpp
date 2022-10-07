@@ -1,15 +1,29 @@
 #include "main.h"
 
 class Odometry {
-    public:
+    private:
     double xPos = 10; //global x position
     double yPos = 10; //global y position
     double orientation = 0; //global orientation
+    pros::Motor leftMotor;
+    pros::Motor rightMotor;
     
+    public:
+    Odometry(double x, double y, double theta, pros::Motor left, pros::Motor right);
     void tracking();
     void turn(double degrees);
     void turnToPoint(double targetX, double targetY);
 };
+
+Odometry::Odometry(double x, double y, double theta, pros::Motor left, pros::Motor right) {
+    xPos = x;
+    yPos = y;
+    orientation = theta;
+    leftMotor = left;
+    rightMotor = right;
+    leftMotor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+    rightMotor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+}
 
 void Odometry::tracking() {
     pros::ADIEncoder encoderLeft (1, 2, false);
@@ -106,18 +120,45 @@ void Odometry::tracking() {
         yPos = global y position
         orientation = global orientation
         */
+
+       pros::delay(20);
     }
 }
 
 void Odometry::turn(double degrees) {
+    //positive clockwise, negative anti-clockwise
+    double targetOrientation = degrees;
+    double uncertainty = 2.5;
     double error = motor_get_position() - motor_get_position();
+    double lastError;
     double Kp = 1; //proportional constant
     double Ki = 1; //integral constant
     double Kd = 1; //derivative constant
-    bool targetOrientation;
+    double integral;
+    double derivative;
+    double rightPower;
+    double leftPower = 60;
+    bool isTargetOrientation = false;
+    leftMotor.tare_position();
+    rightMotor.tare_position();
 
-    while (targetOrientation = false) {
-        //PID loop
+    while (isTargetOrientation = false) {
+        if (orientation >= (targetOrientation - uncertainty) && orientation <= (targetOrientation - uncertainty)) {
+            leftMotor.move(0);
+            rightMove.move(0);
+            isTargetOrientation = true;
+            return;
+        }
+        
+        lastError = error;
+        error = leftMotor.get_position() - rightMotor.get_position();
+        integral = integral + error;
+        derivative = error - lastError;
+        rightPower = leftPower + (error * Kp) + (integral * Ki) + (derivative * Kd);
+        leftMotor.move(leftPower);
+        rightMove.move(rightPower);
+
+        pros::delay(20);
     }
 }
 
