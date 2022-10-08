@@ -27,6 +27,9 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+
+	Odometry chassis(10, 10, 0);
+	pros::Task odometryTracking (chassis.tracking);
 }
 
 /**

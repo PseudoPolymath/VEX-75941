@@ -5,24 +5,18 @@ class Odometry {
     double xPos = 10; //global x position
     double yPos = 10; //global y position
     double orientation = 0; //global orientation
-    pros::Motor leftMotor;
-    pros::Motor rightMotor;
     
     public:
-    Odometry(double x, double y, double theta, pros::Motor left, pros::Motor right);
+    Odometry(double x, double y, double theta);
     void tracking();
     void turn(double degrees);
     void turnToPoint(double targetX, double targetY);
 };
 
-Odometry::Odometry(double x, double y, double theta, pros::Motor left, pros::Motor right) {
+Odometry::Odometry(double x, double y, double theta) {
     xPos = x;
     yPos = y;
     orientation = theta;
-    leftMotor = left;
-    rightMotor = right;
-    leftMotor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-    rightMotor.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 }
 
 void Odometry::tracking() {
@@ -128,7 +122,7 @@ void Odometry::turn(double degrees) {
     //positive clockwise, negative anti-clockwise
     double targetOrientation = degrees;
     double uncertainty = 2.5;
-    double error = motor_get_position() - motor_get_position();
+    double error;
     double lastError;
     double Kp = 1; //proportional constant
     double Ki = 1; //integral constant
@@ -136,24 +130,31 @@ void Odometry::turn(double degrees) {
     double integral;
     double derivative;
     double rightPower;
-    double leftPower = 60;
     bool isTargetOrientation = false;
     leftMotor.tare_position();
     rightMotor.tare_position();
+    if (degrees > 0) {
+        int direction = 1;
+    } else if (degrees < 0) {
+        int direction = -1;
+    } else {
+        int direction = 0;
+    }
+    double leftPower = 60 * direction;
 
     while (isTargetOrientation = false) {
         if (orientation >= (targetOrientation - uncertainty) && orientation <= (targetOrientation - uncertainty)) {
-            leftMotor.move(0);
-            rightMove.move(0);
-            isTargetOrientation = true;
+            motor.move(0);
+            motor.move(0);
+            isTargetOrientation = !isTargetOrientation;
             return;
         }
         
         lastError = error;
-        error = leftMotor.get_position() - rightMotor.get_position();
+        error = motor.get_position() - motor.get_position();
         integral = integral + error;
         derivative = error - lastError;
-        rightPower = leftPower + (error * Kp) + (integral * Ki) + (derivative * Kd);
+        rightPower = (leftPower + (error * Kp) + (integral * Ki) + (derivative * Kd)) * direction * -1;
         leftMotor.move(leftPower);
         rightMove.move(rightPower);
 
