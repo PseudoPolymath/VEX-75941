@@ -1,8 +1,17 @@
 #ifndef Odometry_H
 #define Odometry_H
 
-void Odometry::tracking();
-void Odometry::turn(double degrees);
-void Odometry::turnToPoint(double targetX, double targetY);
+class Odometry {
+    private:
+    double xPos = 10; //global x position
+    double yPos = 10; //global y position
+    double orientation = 0; //global orientation
+    
+    public:
+    Odometry(double x, double y, double theta);
+    void tracking();
+    void turn(double degrees);
+    void turnToPoint(double targetX, double targetY);
+};
 
 #endif

@@ -84,12 +84,20 @@ void opcontrol() {
 	pros::Motor right_mtr_1(14);
 	pros::Motor right_mtr_2(21);
 
+	bool wasPressed = false;
+
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
+
+		bool pressed = master.get_digital(DIGITAL_A);
+		if (pressed && wasPressed) {
+			chassis.turn(90);
+		}
+		wasPressed = !master.get_digital(DIGITAL_A);
 
 		left_mtr_1 = -left;
 		left_mtr_2 = -left;

@@ -20,18 +20,18 @@ Odometry::Odometry(double x, double y, double theta) {
 }
 
 void Odometry::tracking() {
-    pros::ADIEncoder encoderLeft (1, 2, false);
-    pros::ADIEncoder encoderRight (3, 4, false);
-    pros::ADIEncoder encoderBack (5, 6, false);
+    pros::ADIEncoder encoderLeft (5, 6, false);
+    pros::ADIEncoder encoderRight (1, 2, false);
+    pros::ADIEncoder encoderBack (3, 4, false);
     
-    double distanceLeftEncoder = 7; //horizontal distance from the traking center to left encoder
-    double distanceRightEncoder = 7; //horizontal distance from the traking center to right encoder
-    double distanceBackEncoder = 7; //vertical distance from the traking center to horizontal encoder
+    double distanceLeftEncoder = 4; //horizontal distance from the traking center to left encoder
+    double distanceRightEncoder = 4; //horizontal distance from the traking center to right encoder
+    double distanceBackEncoder = 1; //vertical distance from the traking center to horizontal encoder
     double radiusPos; //polar radius of position vector
     double thetaPos; //polar theta of position vector
-    double radiusLeft = 7; //radius of left encoder
-    double radiusRight = 7; //radius of right encoder
-    double radiusBack = 7; //radius of horizontal encoder
+    double radiusLeft = 1.5; //radius of left encoder
+    double radiusRight = 1.5; //radius of right encoder
+    double radiusBack = 1.5; //radius of horizontal encoder
     double orientationInitial = orientation; //previous global orientation
     double orientationFinal; //current global orientation
     double orientationReset = orientation; //global position at last reset
