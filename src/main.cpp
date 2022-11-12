@@ -29,7 +29,11 @@ void initialize() {
 	pros::lcd::register_btn1_cb(on_center_button);
 
 	Odometry chassis(10, 10, 0);
-	pros::Task odometryTracking (chassis.tracking);
+	//pros::Task odometryTracking(chassis.tracking);
+	pros::Task odometryTracking([=] { 
+        chassis.tracking(); 
+        pros::delay(10);
+    } );
 }
 
 /**
